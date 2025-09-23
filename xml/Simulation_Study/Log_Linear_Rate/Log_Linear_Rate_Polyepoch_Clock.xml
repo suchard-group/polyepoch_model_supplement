@@ -3809,7 +3809,7 @@
                     <parameter id="gmrf.mean" value="0"/>
                 </mean>
 				<lambda>
-					<parameter id="gmrf.lambda" value="4.59512"/>
+					<parameter id="gmrf.lambda" value="0.99"/>
 				</lambda>
             </gaussianMarkovRandomField>
         </distribution>

@@ -1797,6 +1797,9 @@
 				<lambda>
 					<parameter id="gmrf.lambda" value="0.99"/>
 				</lambda>
+				<weightProvider>
+					<treeModel idref="treeModel"/>
+				</weightProvider>
 			</gaussianMarkovRandomField>
 		</distribution>
 		<data>
@@ -1928,9 +1931,9 @@
 
 	<operators id="operators" optimizationSchedule="log">
 		<hamiltonianMonteCarloOperator weight="10" nSteps="4" stepSize="5E-3" mode="vanilla"
-                                       drawVariance="1.0" autoOptimize="true" >
+									   drawVariance="1.0" autoOptimize="true" >
 			<jointGradient idref="jointClockRateGradient"/>
-        </hamiltonianMonteCarloOperator>
+		</hamiltonianMonteCarloOperator>
 
 		<randomWalkOperator windowSize="0.1" weight="1">
 			<parameter idref="gmrf.mean"/>
@@ -1940,24 +1943,24 @@
 			<parameter idref="gmrf.precision"/>
 		</scaleOperator>
 
-        <uniformOperator scaleFactor="0.75" weight="200.0">
-            <parameter idref="treeModel.internalNodeHeights"/>
-        </uniformOperator>
+		<uniformOperator scaleFactor="0.75" weight="200.0">
+			<parameter idref="treeModel.internalNodeHeights"/>
+		</uniformOperator>
 
-        <scaleOperator scaleFactor="0.75" weight="10">
-            <parameter idref="treeModel.rootHeight"/>
-        </scaleOperator>
+		<scaleOperator scaleFactor="0.75" weight="10">
+			<parameter idref="treeModel.rootHeight"/>
+		</scaleOperator>
 
-        <upDownOperator scaleFactor="0.75" weight="3">
-            <up>
-                <parameter idref="log.clock.rate"/>
-            </up>
-            <down>
-                <parameter idref="treeModel.allInternalNodeHeights"/>
-            </down>
-        </upDownOperator>
+		<upDownOperator scaleFactor="0.75" weight="3">
+			<up>
+				<parameter idref="log.clock.rate"/>
+			</up>
+			<down>
+				<parameter idref="treeModel.allInternalNodeHeights"/>
+			</down>
+		</upDownOperator>
 
-	 	<deltaExchange delta="0.01" weight="2.0">
+		<deltaExchange delta="0.01" weight="2.0">
 			<parameter idref="frequencies"/>
 		</deltaExchange>
 		<scaleOperator scaleFactor="0.75" weight="3.0">
@@ -1992,17 +1995,17 @@
 		</scaleOperator>
 
 		<subtreeSlide size="1.0" gaussian="true" weight="10">
-            <treeModel idref="treeModel"/>
-        </subtreeSlide>
-        <narrowExchange weight="10">
-            <treeModel idref="treeModel"/>
-        </narrowExchange>
-        <wideExchange weight="5">
-            <treeModel idref="treeModel"/>
-        </wideExchange>
-        <wilsonBalding weight="5">
-            <treeModel idref="treeModel"/>
-        </wilsonBalding>
+			<treeModel idref="treeModel"/>
+		</subtreeSlide>
+		<narrowExchange weight="10">
+			<treeModel idref="treeModel"/>
+		</narrowExchange>
+		<wideExchange weight="5">
+			<treeModel idref="treeModel"/>
+		</wideExchange>
+		<wilsonBalding weight="5">
+			<treeModel idref="treeModel"/>
+		</wilsonBalding>
 
 	</operators>
 
@@ -2070,7 +2073,7 @@
 		</log>
 
 		<!-- write log to file                                                       -->
-		<log id="fileLog" logEvery="1000" fileName="lassa.log" overwrite="false">
+		<log id="fileLog" logEvery="1000" fileName="Lassa.log" overwrite="false">
 			<posterior idref="posterior"/>
 			<prior idref="prior"/>
 			<likelihood idref="likelihood"/>
@@ -2099,8 +2102,8 @@
 		</log>
 
 		<!-- write tree log to file                                                  -->
-		<logTree id="treeFileLog" logEvery="2000" nexusFormat="true" fileName="lassa.trees" sortTranslationTable="true"
-			mapNamesToNumbers="false">
+		<logTree id="treeFileLog" logEvery="2000" nexusFormat="true" fileName="Lassa.trees" sortTranslationTable="true"
+				 mapNamesToNumbers="false">
 			<treeModel idref="treeModel"/>
 			<trait name="rate" tag="rate">
 				<arbitraryBranchRates idref="branchRates"/>
@@ -2108,7 +2111,7 @@
 			<posterior idref="posterior"/>
 		</logTree>
 	</mcmc>
-	<report fileName="timer.txt">
+	<report fileName="Lassa_timer.txt">
 		<property name="timer">
 			<object idref="mcmc"/>
 		</property>

@@ -7,7 +7,7 @@
 <!--       David Geffen School of Medicine, University of California, Los Angeles-->
 <!--       http://beast.community/                                           -->
 <beast version="1.10.4">
-	
+
 
 	<!-- The list of taxa to be analysed (can also include dates/ages).          -->
 	<!-- ntax=402                                                                -->
@@ -1219,8 +1219,8 @@
 			<date value="1993.0" direction="forwards" units="years"/>
 		</taxon>
 	</taxa>
-	
-	
+
+
 
 	<!-- The sequence alignment (each sequence refers to a taxon above).         -->
 	<!-- ntax=402 nchar=1701                                                     -->
@@ -2834,15 +2834,15 @@
 			ATGAAGACTATCATTGCTTTGAGCTACATTTTATGTCTGGTTTTCGCTCAAAAACTTCCCGGAAATGACAACAGCACAGCAACGCTGTGCCTGGGACATCATGCAGTGCCAAACGGAACGCTAGTGAAAACAATCACGAATGATCAAATTGAAGTGACTAATGCTACTGAGTTGGTTCAGAGTTCCTCAACAGGTAGAATATGCGACAGTCCTCACCGAATCCTTGATGGAAAAAACTGCACACTGATAGATGCTCTATTGGGAGACCCTCATTGTGATGGCTTCCAAAATAAGGAATGGGACCTTTTTGTTGAACGCAGCAAAGCTTACAGCAACTGTTACCCTTATGATGTGCCGGATTATGCCTCCCTTAGGTCACTAGTTGCCTCATCAGGCACCCTGGAGTTTATCAATGAAGACTTCAATTGGACTGGAGTCGCTCAGGATGGGGGAAGCTRTGCTTGCAAAAGGGGATCTGTTAACAGTTTCTTTAGTAGATTGAATTGGTTGCACAAATTAGAATACAAATATCCAGCGCTGAACGTGACTATGCCAAACAATGGCAAATTTGACAAATTGTACATTTGGGGGGTTCACCACCCGAGCACGGACAGTGACCAAACCAGCCTATATGTTAGAGCATCAGGGAGAGTCACAGTCTCTACCAAAAGAAGCCAACAAACTGTAACCCCGAATATCGGGTCTAGACCCTGGGTAAGGGGTCAGTCCAGTAGAATAAGCATCTATTGGACAATAGTAAAACCGGGAGACATACTTTTGATTAATAGCACAGGGAATCTAATTGCTCCTCGGGGTTACTTCAAAATACGAAATGGGAAAAGCTCAATAATGAGGTCAGATGCACCCATTGGCAACTGCAGTTCTGAATGCATCACTCCAAATGGAAGCATTCCCAATGACAAACCTTTTCAAAATGTAAACAGGATCACATATGGGGCCTGCCCCAGATATGTTAAGCAAAACACTCTGAAATTGGCAACAGGGATGCGGAATGTACCAGAGAAACAAACTAGAGGCATATTCGGCGCAATCGCAGGTTTCATAGAAAATGGTTGGGAGGGAATGGTAGACGGTTGGTACGGTTTCAGGCATCAAAATTCTGAGGGCACAGGACAAGCAGCAGATCTTAAAAGCACTCAAGCAGCAATCGACCAAATCAACGGGAAACTGAATAGGTTAATCGAGAAAACGAACGAGAAATTCCATCAAATCGAAAAAGAATTCTCAGAAGTAGAAGGGAGAATTCAGGACCTCGAGAAATATGTTGAAGACACTAAAATAGATCTCTGGTCTTACAACGCGGAGCTTCTTGTTGCCCTGGAGAACCAACATACAATTGATCTAACTGACTCAGAAATGAACAAACTGTTTGAAAAAACAAGGAAGCAACTGAGGGAAAATGCTGAGGACATGGGCAATGGTTGCTTCAAAATATACCACAAATGTGACAATGCCTGCATAGGGTCAATCAGAAATGGAACTTATGACCATGATGTATACAGAGACGAAGCATTAAACAACCGGTTCCAGATCAAAGGTGTTGAGCTGAAGTCAGGATACAAAGATTGGATCCTATGGATCTCCTTTGCCATATCATGCTTTTTGCTTTGTGTTGTTTTGCTGGGGTTCATCATGTGGGCCTGCCAAAAAGGCAACATTAGGTGCAACATTTGCATTTGA
 		</sequence>
 	</alignment>
-	
-	
+
+
 
 	<!-- The unique patterns from 1 to end                                       -->
 	<!-- npatterns=823                                                           -->
 	<patterns id="patterns" from="1" strip="false">
 		<alignment idref="alignment"/>
 	</patterns>
-	
+
 
 	<!-- A prior assumption that the population size has remained constant       -->
 	<!-- throughout the time spanned by the genealogy.                           -->
@@ -2851,14 +2851,14 @@
 			<parameter id="constant.popSize" value="1.0" lower="0.0"/>
 		</populationSize>
 	</constantSize>
-	
+
 
 	<!-- Generate a random starting tree under the coalescent process            -->
 	<coalescentSimulator id="startingTree">
 		<taxa idref="taxa"/>
 		<constantSize idref="constant"/>
 	</coalescentSimulator>
-	
+
 
 	<!-- Generate a tree model                                                   -->
 	<treeModel id="treeModel">
@@ -2944,7 +2944,7 @@
 
 	<randomField id="gmrf">
 		<distribution>
-			<gaussianMarkovRandomField dim="360" matchPseudoDeterminant="false">
+			<gaussianMarkovRandomField dim="360" matchPseudoDeterminant="false" transformType = "inverseLogit">
 				<precision>
 					<parameter id="gmrf.precision" value="1" lower="0.0"/>
 				</precision>
@@ -2952,7 +2952,7 @@
 					<parameter id="gmrf.mean" value="0"/>
 				</mean>
 				<lambda>
-					<parameter id="gmrf.lambda" value="0"/>
+					<parameter id="gmrf.lambda" value="0.9"/>
 				</lambda>
 			</gaussianMarkovRandomField>
 		</distribution>
@@ -2965,8 +2965,13 @@
 		<parameter idref="gmrf.mean"/>
 	</normalPrior>
 
-	<normalPrior id="gmrfLambdaPrior" mean="0" stdev="1">
+	<transformedParameter id="gmrf.lambda.logit">
 		<parameter idref="gmrf.lambda"/>
+		<transform type="logit"/>
+	</transformedParameter>
+
+	<normalPrior id="gmrfLambdaPrior" mean="0" stdev="1">
+		<transformedParameter idref="gmrf.lambda.logit"/>
 	</normalPrior>
 
 	<gammaPrior id="gmrfPrecisionPrior" shape="0.001" scale="1000">
@@ -3051,13 +3056,13 @@
 			<parameter idref="gmrf.precision"/>
 		</scaleOperator>
 
-		<randomWalkOperator windowSize="0.1" weight="5">
-			<parameter idref="gmrf.lambda"/>
-		</randomWalkOperator>
+		<transformedParameterRandomWalkOperator windowSize="0.1" weight="5">
+			<transformedParameter idref="gmrf.lambda.logit"/>
+		</transformedParameterRandomWalkOperator>
 
-<!--		<uniformOperator weight="10" lower="0.0" upper="1.0">
-			<parameter idref="gmrf.lambda"/>
-		</uniformOperator>-->
+		<!--		<uniformOperator weight="10" lower="0.0" upper="1.0">
+                    <parameter idref="gmrf.lambda"/>
+                </uniformOperator>-->
 
 		<scaleOperator scaleFactor="0.75" weight="2.0">
 			<parameter idref="ac"/>
@@ -3120,16 +3125,16 @@
 
 	</operators>
 
-	<mcmc id="mcmc" chainLength="3000000" autoOptimize="true" fullEvaluation="0">
+	<mcmc id="mcmc" chainLength="5000000" autoOptimize="true" fullEvaluation="0">
 		<posterior id="posterior">
 			<prior id="prior">
 				<randomField idref="gmrf"/>
 				<normalPrior idref="gmrfMeanPrior"/>
 				<gammaPrior idref="gmrfPrecisionPrior"/>
 				<normalPrior idref="gmrfLambdaPrior"/>
-<!--				<uniformPrior lower="0.1" upper="0.9">
-					<parameter idref="gmrf.lambda"/>
-				</uniformPrior>-->
+				<!--				<uniformPrior lower="0.1" upper="0.9">
+                                    <parameter idref="gmrf.lambda"/>
+                                </uniformPrior>-->
 				<gammaPrior shape="0.05" scale="10.0" offset="0.0">
 					<parameter idref="ac"/>
 				</gammaPrior>
@@ -3212,7 +3217,7 @@
 		</log>
 	</mcmc>
 
-	<report fileName="g360rho2_timer.txt">
+	<report fileName="flu_timer.txt">
 		<property name="timer">
 			<object idref="mcmc"/>
 		</property>
