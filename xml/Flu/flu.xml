@@ -2942,6 +2942,13 @@
 		</gridPoints>
 	</timeVaryingRates>
 
+	<parameter id="gmrf.lambda.logit" value="4.5"/>
+
+	<transformedParameter id="gmrf.lambda" inverse="true">
+		<parameter idref="gmrf.lambda.logit"/>
+		<transform type="logit"/>
+	</transformedParameter>
+
 	<randomField id="gmrf">
 		<distribution>
 			<gaussianMarkovRandomField dim="360" matchPseudoDeterminant="false" transformType = "inverseLogit">
@@ -2952,7 +2959,7 @@
 					<parameter id="gmrf.mean" value="0"/>
 				</mean>
 				<lambda>
-					<parameter id="gmrf.lambda" value="0.9"/>
+					<transformedParameter idref="gmrf.lambda"/>
 				</lambda>
 			</gaussianMarkovRandomField>
 		</distribution>
@@ -2964,11 +2971,6 @@
 	<normalPrior id="gmrfMeanPrior" mean="0" stdev="100">
 		<parameter idref="gmrf.mean"/>
 	</normalPrior>
-
-	<transformedParameter id="gmrf.lambda.logit">
-		<parameter idref="gmrf.lambda"/>
-		<transform type="logit"/>
-	</transformedParameter>
 
 	<normalPrior id="gmrfLambdaPrior" mean="0" stdev="1">
 		<transformedParameter idref="gmrf.lambda.logit"/>
@@ -3056,13 +3058,9 @@
 			<parameter idref="gmrf.precision"/>
 		</scaleOperator>
 
-		<transformedParameterRandomWalkOperator windowSize="0.1" weight="5">
-			<transformedParameter idref="gmrf.lambda.logit"/>
-		</transformedParameterRandomWalkOperator>
-
-		<!--		<uniformOperator weight="10" lower="0.0" upper="1.0">
-                    <parameter idref="gmrf.lambda"/>
-                </uniformOperator>-->
+		<randomWalkOperator windowSize="0.1" weight="1">
+			<parameter idref="gmrf.lambda.logit"/>
+		</randomWalkOperator>
 
 		<scaleOperator scaleFactor="0.75" weight="2.0">
 			<parameter idref="ac"/>
