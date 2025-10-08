@@ -5,33 +5,27 @@ in the "Inhomogeneous continuous-time Markov chains to infer flexible time-varyi
 evolutionary rates" paper by Datta et al. 
 
 ### Setting up BEAGLE
-Please follow the [BEAGLE installation instructions](https://github.com/beagle-dev/beagle-lib).
-But get the `hmc-clock` branch.
+Please follow the [BEAGLE installation instructions](https://github.com/beagle-dev/beagle-lib/wiki/MacInstallInstructions)
+for Mac users and get the `hmc-clock` branch or run the commands below.
 
-For Mac users, the following commands will compile the CPU version of BEAGLE.
-Follow the [instructions](https://github.com/beagle-dev/beagle-lib) if you need to install any other dependent software.
+This will compile the CPU version of BEAGLE.
+Follow the [instructions](https://github.com/beagle-dev/beagle-lib/wiki/MacInstallInstructions) if you need to install any other dependent software.
 
 ```
 xcode-select --install
-brew install libtool autoconf automake
+brew install cmake
 git clone -b hmc-clock https://github.com/beagle-dev/beagle-lib.git
 cd beagle-lib
-./autogen.sh
-./configure --without-opencl --without-cuda
-sudo make install
+mkdir build
+cd build
+cmake -DBUILD_CUDA=OFF -DBUILD_OPENCL=OFF -DBUILD_OPENMP=off ..
+cmake --build .
+sudo cmake --install .
 ```
 
+For Linux users, the instructions can be found [here](https://github.com/beagle-dev/beagle-lib/wiki/LinuxInstallInstructions)
 
-For Linux users, the commands are similar.
-
-```
-sudo apt-get install build-essential autoconf automake libtool git pkg-config openjdk-9-jdk
-git clone -b hmc-clock https://github.com/beagle-dev/beagle-lib.git
-cd beagle-lib
-./autogen.sh
-./configure --without-opencl --without-cuda
-sudo make install
-```
+For Windows users, the instructions can be found [here](https://github.com/beagle-dev/beagle-lib/wiki/WindowsInstallInstructions)
 
 
 The libraries are installed into `/usr/local/lib`.
@@ -70,7 +64,7 @@ cd where_you_want_to_save_results
 	
 
 	```
-	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 6662 -overwrite where_this_repository_is_stored/xml/Simulation_Study/Constant_Rate/Constant_Rate_Simulation.xml
+	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 6661 -overwrite where_this_repository_is_stored/polyepoch_model_supplement/xml/Simulation_Study/Constant_Rate/Constant_Rate_Simulation.xml
 	```
 	
 	
@@ -80,13 +74,13 @@ cd where_you_want_to_save_results
 
 
 	```
-	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 6662 -overwrite where_this_repository_is_stored/xml/Simulation_Study/Constant_Rate/Constant_Rate_True_Model.xml
+	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 1161 -overwrite where_this_repository_is_stored/polyepoch_model_supplement/xml/Simulation_Study/Constant_Rate/Constant_Rate_True_Model.xml
 	```
 	
 * Fit polyepoch clock model
 
 	```
-	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 6662 -overwrite where_this_repository_is_stored/xml/Simulation_Study/Constant_Rate/Constant_Rate_Polyepoch_Clock.xml
+	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 1161 -overwrite where_this_repository_is_stored/polyepoch_model_supplement/xml/Simulation_Study/Constant_Rate/Constant_Rate_Polyepoch_Clock.xml
 	```	
 	
 
@@ -96,7 +90,7 @@ cd where_you_want_to_save_results
 	
 
 	```
-	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 6662 -overwrite where_this_repository_is_stored/xml/Simulation_Study/Log_Linear_Rate/Log_Linear_Rate_Simulation.xml
+	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 6661 -overwrite where_this_repository_is_stored/polyepoch_model_supplement/xml/Simulation_Study/Log_Linear_Rate/Log_Linear_Rate_Simulation.xml
 	```
 	
 
@@ -104,13 +98,13 @@ cd where_you_want_to_save_results
 
 
 	```
-	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 6662 -overwrite where_this_repository_is_stored/xml/Simulation_Study/Log_Linear_Rate/Log_Linear_Rate_True_Model.xml
+	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 1161 -overwrite where_this_repository_is_stored/polyepoch_model_supplement/xml/Simulation_Study/Log_Linear_Rate/Log_Linear_Rate_True_Model.xml
 	```
 	
 * Fit polyepoch clock model
 
 	```
-	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 6662 -overwrite where_this_repository_is_stored//Users/pratyusa/xml/Simulation_Study/Log_Linear_Rate/Log_Linear_Rate_Polyepoch_Clock.xml
+	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 1161 -overwrite where_this_repository_is_stored/polyepoch_model_supplement/xml/Simulation_Study/Log_Linear_Rate/Log_Linear_Rate_Polyepoch_Clock.xml
 	```	
 	
 
@@ -123,7 +117,7 @@ cd where_you_want_to_save_results
 	
 
 	```
-	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 6662 -overwrite where_this_repository_is_stored/xml/West_Nile_Virus/wnv_pcm.xml
+	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 1161 -overwrite where_this_repository_is_stored/polyepoch_model_supplement/xml/West_Nile_Virus/wnv_pcm.xml
 	```
 	
 
@@ -131,20 +125,20 @@ cd where_you_want_to_save_results
 
 
 	```
-	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 6662 -overwrite where_this_repository_is_stored/xml/West_Nile_Virus/wnv_scr.xml
+	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 1161 -overwrite where_this_repository_is_stored/polyepoch_model_supplement/xml/West_Nile_Virus/wnv_scr.xml
 	```
 	
 * Marginal likelihood estimation under polyepoch clock model
 
 	```
-	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 6662 -overwrite where_this_repository_is_stored//Users/pratyusa/xml/West_Nile_Virus/wnv_pcm_mar_lik.xml
+	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 1161 -overwrite where_this_repository_is_stored/polyepoch_model_supplement/xml/West_Nile_Virus/wnv_pcm_mar_lik.xml
 	```	
 
 
 * Marginal likelihood estimation under strict clock model
 
 	```
-	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 6662 -overwrite where_this_repository_is_stored//Users/pratyusa//Users/pratyusa/xml/West_Nile_Virus/wnv_scr_mar_lik.xml
+	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 1161 -overwrite where_this_repository_is_stored/polyepoch_model_supplement/xml/West_Nile_Virus/wnv_scr_mar_lik.xml
 	```	
 	
 
@@ -156,19 +150,19 @@ cd where_you_want_to_save_results
 
 
 	```
-	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 6662 -overwrite where_this_repository_is_stored/xml/Dengue/dengue_pcm.xml
+	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 1161 -overwrite where_this_repository_is_stored/polyepoch_model_supplement/xml/Dengue/dengue_pcm.xml
 	```
 	
 * Marginal likelihood estimation under polyepoch clock model
 
 	```
-	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 6662 -overwrite where_this_repository_is_stored/xml/Dengue/dnv_pcm_mar_lik.xml
+	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 1161 -overwrite where_this_repository_is_stored/polyepoch_model_supplement/xml/Dengue/dnv_pcm_mar_lik.xml
 	```
 
 * Marginal likelihood estimation under random local clock model
 
 	```
-	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 6662 -overwrite where_this_repository_is_stored/xml/Dengue/dengue_rlc_mar_lik.xml
+	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 1161 -overwrite where_this_repository_is_stored/polyepoch_model_supplement/xml/Dengue/dengue_rlc_mar_lik.xml
 	```
 	
 #### Seasonal Influenza A/H3N2
@@ -177,16 +171,15 @@ cd where_you_want_to_save_results
 
 
 	```
-	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 6662 -overwrite where_this_repository_is_stored/xml/Flu/flu.xml
+	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 1161 -overwrite where_this_repository_is_stored/polyepoch_model_supplement/xml/Flu/flu.xml
 	```
 	
 #### SARS-CoV-2
 
-* Fit polyepoch clock model
-
+* Fit polyepoch clock model: requires genome data from GISAID.org to run sc2.xml
 
 	```
-	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 6662 -overwrite where_this_repository_is_stored/xml/SARS_CoV_2/sc2.xml
+	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 1161 -overwrite where_this_repository_is_stored/polyepoch_model_supplement/xml/SARS_CoV_2/sc2.xml
 	```
 	
 #### Lassa
@@ -195,6 +188,6 @@ cd where_you_want_to_save_results
 
 
 	```
-	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 6662 -overwrite where_this_repository_is_stored/xml/Lassa/lassa.xml
+	java -jar -Djava.library.path=/usr/local/lib where_beast_is_git_cloned/beast-mcmc/build/dist/beast.jar -seed 1161 -overwrite where_this_repository_is_stored/polyepoch_model_supplement/xml/Lassa/lassa.xml
 	```
 
